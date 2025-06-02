@@ -67,11 +67,12 @@ const HomePage = ({ setCurrentPage, logout }) => {
             (title, i) => {
               if (i === 0) {
                 return (
-                  <a
+                  <div
                     key={i}
-                    href="https://machine-gallery-88bv.vercel.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => {
+                      window.location.href =
+                        "https://machine-gallery-88bv.vercel.app/";
+                    }}
                     className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center cursor-pointer hover:bg-gray-700 transition"
                   >
                     <h3 className="text-xl sm:text-2xl font-bold mb-3 text-red-400">
@@ -80,7 +81,7 @@ const HomePage = ({ setCurrentPage, logout }) => {
                     <p className="text-gray-300 text-sm sm:text-base">
                       Some awesome feature about {title.toLowerCase()}
                     </p>
-                  </a>
+                  </div>
                 );
               }
               return (
