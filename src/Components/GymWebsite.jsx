@@ -23,7 +23,6 @@ const GymWebsite = () => {
     password: "",
   });
 
-  // Helper to convert image file to base64 string
   const fileToBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -32,7 +31,6 @@ const GymWebsite = () => {
       reader.onerror = (error) => reject(error);
     });
 
-  // Load members and logged-in user from localStorage on mount
   useEffect(() => {
     const storedMembers = JSON.parse(localStorage.getItem("gymMembers")) || [];
     setMembers(storedMembers);
@@ -44,12 +42,10 @@ const GymWebsite = () => {
     }
   }, []);
 
-  // Save members to localStorage when members state changes
   useEffect(() => {
     localStorage.setItem("gymMembers", JSON.stringify(members));
   }, [members]);
 
-  // Save logged-in user to localStorage whenever user state changes
   useEffect(() => {
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
@@ -61,14 +57,12 @@ const GymWebsite = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Check if email already exists
     const exists = members.some((m) => m.email === formData.email);
     if (exists) {
       alert("Email already registered!");
       return;
     }
 
-    // Convert image file to base64 if exists
     let base64Image = null;
     if (formData.image) {
       base64Image = await fileToBase64(formData.image);
@@ -81,7 +75,6 @@ const GymWebsite = () => {
 
     setMembers([...members, newMember]);
 
-    // Clear form
     setFormData({
       name: "",
       email: "",
@@ -102,7 +95,6 @@ const GymWebsite = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Admin login check
     if (
       loginData.email === "admin@gym.com" &&
       loginData.password === "admin123"
@@ -112,7 +104,6 @@ const GymWebsite = () => {
       return;
     }
 
-    // Member login check
     const foundUser = members.find(
       (m) => m.email === loginData.email && m.password === loginData.password
     );
@@ -133,28 +124,26 @@ const GymWebsite = () => {
 
   const logout = () => {
     setUser(null);
+    setLoginData({ email: "", password: "" });
     setCurrentPage("login");
   };
 
   const renderPage = () => {
     if (!user) {
-      if (currentPage === "signup") {
-        return (
-          <SignupPage
-            formData={formData}
-            setFormData={setFormData}
-            handleSignup={handleSignup}
-            handleFileChange={handleFileChange}
-            goHome={() => setCurrentPage("login")}
-          />
-        );
-      }
-      return (
+      return currentPage === "signup" ? (
+        <SignupPage
+          formData={formData}
+          setFormData={setFormData}
+          handleSignup={handleSignup}
+          handleFileChange={handleFileChange}
+          goHome={setCurrentPage} // ← FIXED HERE
+        />
+      ) : (
         <LoginPage
           loginData={loginData}
           setLoginData={setLoginData}
           handleLogin={handleLogin}
-          goHome={() => setCurrentPage("signup")}
+          goHome={setCurrentPage} // ← FIXED HERE
         />
       );
     }

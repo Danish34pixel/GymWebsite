@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ThreeScene from "./ThreeScene";
 import LoadingScreen from "./LoadingScreen";
 
-const HomePage = ({ setCurrentPage }) => {
+const HomePage = ({ setCurrentPage, logout }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +34,13 @@ const HomePage = ({ setCurrentPage }) => {
               className="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded-lg transition-all w-full sm:w-auto"
             >
               Sign Up
+            </button>
+            {/* Logout Button */}
+            <button
+              onClick={logout}
+              className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded-lg transition-all w-full sm:w-auto"
+            >
+              Logout
             </button>
           </div>
         </div>
