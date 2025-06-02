@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ThreeScene from "./ThreeScene";
 import LoadingScreen from "./LoadingScreen";
+import { Link } from "react-router-dom";
 
 const HomePage = ({ setCurrentPage, logout }) => {
   const [loading, setLoading] = useState(true);
@@ -63,19 +64,39 @@ const HomePage = ({ setCurrentPage, logout }) => {
         {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-16">
           {["Modern Equipment", "Expert Trainers", "24/7 Access"].map(
-            (title, i) => (
-              <div
-                key={i}
-                className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center"
-              >
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 text-red-400">
-                  {title}
-                </h3>
-                <p className="text-gray-300 text-sm sm:text-base">
-                  Some awesome feature about {title.toLowerCase()}
-                </p>
-              </div>
-            )
+            (title, i) => {
+              if (i === 0) {
+                return (
+                  <a
+                    key={i}
+                    href="https://machine-gallery-88bv.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center cursor-pointer hover:bg-gray-700 transition"
+                  >
+                    <h3 className="text-xl sm:text-2xl font-bold mb-3 text-red-400">
+                      {title}
+                    </h3>
+                    <p className="text-gray-300 text-sm sm:text-base">
+                      Some awesome feature about {title.toLowerCase()}
+                    </p>
+                  </a>
+                );
+              }
+              return (
+                <div
+                  key={i}
+                  className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center"
+                >
+                  <h3 className="text-xl sm:text-2xl font-bold mb-3 text-red-400">
+                    {title}
+                  </h3>
+                  <p className="text-gray-300 text-sm sm:text-base">
+                    Some awesome feature about {title.toLowerCase()}
+                  </p>
+                </div>
+              );
+            }
           )}
         </div>
       </div>
