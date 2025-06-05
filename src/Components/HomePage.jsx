@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const HomePage = ({ setCurrentPage, logout }) => {
   const [loading, setLoading] = useState(true);
-
+  console.log("at home page");
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);

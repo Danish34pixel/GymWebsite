@@ -17,6 +17,7 @@ const GymWebsite = () => {
     age: "",
     gender: "",
     image: null,
+    role: "admin",
   });
 
   const [loginData, setLoginData] = useState({
@@ -176,6 +177,8 @@ const GymWebsite = () => {
   };
 
   const renderPage = () => {
+    console.log(user);
+    console.log(user?.role);
     if (!user) {
       return currentPage === "signup" ? (
         <SignupPage
@@ -196,11 +199,13 @@ const GymWebsite = () => {
     }
 
     if (user.role === "admin") {
+      // AdminPanel route
       return (
         <AdminPanel
           members={members}
           deleteMember={deleteMember}
           logout={logout}
+          setMembers={setMembers}
         />
       );
     }

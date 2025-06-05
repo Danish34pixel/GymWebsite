@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "./FirebaseInit";
-
+// import { getDatabase, ref, set } from "firebase/database";
 const SignupPage = ({
   formData,
   setFormData,
@@ -26,7 +26,21 @@ const SignupPage = ({
         formData.email,
         formData.password
       );
+
       // Optionally, you can save additional user info to Firestore here
+
+      // const user = userCredential.user;
+
+      // const database = getDatabase();
+      // // Store additional user data in Realtime Database
+      // await set(ref(database, "users/" + user.uid), {
+      //   name: formData.name,
+      //   age: formData.age,
+      //   role: "admin",
+      //   email: formData.email, // Optional, but useful
+      // });
+      // console.log("user saved successfully", user.uid);
+
       handleSignup(e); // Call your local handler for any extra logic
     } catch (error) {
       // Show more user-friendly error messages
@@ -54,9 +68,11 @@ const SignupPage = ({
           type="text"
           placeholder="Address"
           value={formData.address || ""}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, address: e.target.value })
+          }
           className="w-full p-3 rounded bg-gray-800 border border-gray-700"
-          required
+          // required
         />
         <input
           type="text"
@@ -78,7 +94,9 @@ const SignupPage = ({
           type="password"
           placeholder="Password"
           value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
           className="w-full p-3 rounded bg-gray-800 border border-gray-700"
           required
         />
@@ -88,7 +106,7 @@ const SignupPage = ({
           value={formData.age}
           onChange={(e) => setFormData({ ...formData, age: e.target.value })}
           className="w-full p-3 rounded bg-gray-800 border border-gray-700"
-          required
+          // required
         />
         <select
           value={formData.gender}
@@ -117,7 +135,7 @@ const SignupPage = ({
               setFormData({ ...formData, paymentMethod: e.target.value })
             }
             className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white"
-            required
+            // required
           >
             <option value="">Select Payment Method</option>
             <option value="online">Online</option>
@@ -148,7 +166,7 @@ const SignupPage = ({
               setFormData({ ...formData, paymentPlan: e.target.value })
             }
             className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white"
-            required
+            // required
           >
             <option value="">Select Plan</option>
             <option value="monthly">₹500 per month</option>
