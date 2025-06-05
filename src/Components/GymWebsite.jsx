@@ -80,6 +80,7 @@ const GymWebsite = () => {
     const newMember = {
       ...formData,
       image: base64Image,
+      status: formData.paymentMethod === "cash" ? "pending" : "active",
     };
 
     setMembers([...members, newMember]);
@@ -93,7 +94,11 @@ const GymWebsite = () => {
       image: null,
     });
 
-    alert("Signup successful! Please log in.");
+    if (formData.paymentMethod === "cash") {
+      alert("Signup successful! Your cash payment is pending admin confirmation.");
+    } else {
+      alert("Signup successful! Please log in.");
+    }
     setCurrentPage("login");
   };
 
@@ -118,6 +123,10 @@ const GymWebsite = () => {
     );
 
     if (foundUser) {
+      if (foundUser.status === "pending") {
+        alert("Your cash payment is pending admin confirmation.");
+        return;
+      }
       setUser(foundUser);
       alert(`Welcome ${foundUser.name}`);
       setCurrentPage("home");
