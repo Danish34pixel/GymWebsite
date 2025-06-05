@@ -48,7 +48,16 @@ const GymWebsite = () => {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      try {
+        // Only store minimal user info to avoid quota issues
+        const minimalUser = { email: user.email, role: user.role, name: user.name };
+        localStorage.setItem("loggedInUser", JSON.stringify(minimalUser));
+      } catch (e) {
+        // Fallback: remove if quota exceeded
+        localStorage.removeItem("loggedInUser");
+        // Optionally, show a warning or log
+        console.warn("Could not save user to localStorage:", e);
+      }
     } else {
       localStorage.removeItem("loggedInUser");
     }
