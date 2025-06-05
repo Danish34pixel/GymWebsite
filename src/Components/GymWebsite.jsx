@@ -50,7 +50,11 @@ const GymWebsite = () => {
     if (user) {
       try {
         // Only store minimal user info to avoid quota issues
-        const minimalUser = { email: user.email, role: user.role, name: user.name };
+        const minimalUser = {
+          email: user.email,
+          role: user.role,
+          name: user.name,
+        };
         localStorage.setItem("loggedInUser", JSON.stringify(minimalUser));
       } catch (e) {
         // Fallback: remove if quota exceeded
@@ -95,7 +99,9 @@ const GymWebsite = () => {
     });
 
     if (formData.paymentMethod === "cash") {
-      alert("Signup successful! Your cash payment is pending admin confirmation.");
+      alert(
+        "Signup successful! Your cash payment is pending admin confirmation."
+      );
     } else {
       alert("Signup successful! Please log in.");
     }
@@ -110,7 +116,7 @@ const GymWebsite = () => {
     e.preventDefault();
 
     if (
-      loginData.email === "admin@gym.com" &&
+      loginData.email === "danishkhaannn34@gmail.com" &&
       loginData.password === "admin123"
     ) {
       setUser({ role: "admin", email: "admin@gym.com" });
