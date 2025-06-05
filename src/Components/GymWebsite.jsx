@@ -3,6 +3,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import AdminPanel from "./AdminPanel";
 import HomePage from "./HomePage";
+import emailjs from "emailjs-com";
 
 const GymWebsite = () => {
   const [currentPage, setCurrentPage] = useState("login");
@@ -99,6 +100,28 @@ const GymWebsite = () => {
     });
 
     if (formData.paymentMethod === "cash") {
+      // Send email to admin for cash confirmation
+      emailjs
+        .send(
+          "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
+          "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+          {
+            user_email: formData.email,
+            user_name: formData.name,
+            confirm_link: `${
+              window.location.origin
+            }/confirm?email=${encodeURIComponent(formData.email)}`,
+          },
+          "YOUR_USER_ID" // Replace with your EmailJS user ID
+        )
+        .then(
+          (result) => {
+            console.log("Email sent to admin:", result.text);
+          },
+          (error) => {
+            console.error("Failed to send email:", error.text);
+          }
+        );
       alert(
         "Signup successful! Your cash payment is pending admin confirmation."
       );
