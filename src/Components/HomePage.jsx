@@ -16,7 +16,7 @@ const HomePage = ({ setCurrentPage, logout }) => {
   if (loading) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-x-hidden">
       {/* Navbar */}
       <nav className="bg-black/50 backdrop-blur-sm p-4">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
