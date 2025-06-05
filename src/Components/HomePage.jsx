@@ -88,7 +88,13 @@ const HomePage = ({ setCurrentPage, logout }) => {
               return (
                 <div
                   key={i}
-                  className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center"
+                  className="bg-gray-800/50 p-6 sm:p-8 rounded-lg backdrop-blur-sm text-center cursor-pointer hover:bg-gray-700 transition"
+                  onClick={() => {
+                    window.open(
+                      "https://training-omega-ten.vercel.app/",
+                      "_blank"
+                    );
+                  }}
                 >
                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-red-400">
                     {title}
