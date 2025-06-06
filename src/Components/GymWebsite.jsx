@@ -120,9 +120,9 @@ const GymWebsite = () => {
 
     if (formData.paymentMethod === "cash") {
       // EmailJS credentials - FILL THESE WITH YOUR REAL VALUES from https://dashboard.emailjs.com/
-      const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // e.g. service_abc123
-      const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. template_xyz456
-      const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // e.g. 8JHkLzxxxxxxx
+      const EMAILJS_SERVICE_ID = "service_e8ui0id"; // e.g. service_abc123
+      const EMAILJS_TEMPLATE_ID = "template_ckmu8z8"; // e.g. template_xyz456
+      const EMAILJS_PUBLIC_KEY = "HPatAYbWo_57IPJu6"; // e.g. 8JHkLzxxxxxxx
 
       emailjs
         .send(
