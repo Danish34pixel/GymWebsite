@@ -128,9 +128,9 @@ const GymWebsite = () => {
           {
             user_email: formData.email,
             user_name: formData.name,
-            confirm_link: `https://gym-website-two-eta.vercel.app/approve?email=${encodeURIComponent(
-              formData.email
-            )}`,
+            confirm_link: `${
+              window.location.origin
+            }/approve?email=${encodeURIComponent(formData.email)}`,
             admin_email: "Imi.khan1987@gmail.com",
           },
           EMAILJS_PUBLIC_KEY
