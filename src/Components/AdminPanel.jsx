@@ -32,8 +32,9 @@ const AdminPanel = ({ members, deleteMember, logout }) => {
               <h3 className="text-xl font-semibold">{member.name}</h3>
               <p className="text-sm text-gray-300">Email: {member.email}</p>
               <p className="text-sm text-gray-300">Age: {member.age}</p>
+              <p className="text-sm text-gray-300">Gender: {member.gender}</p>
               <p className="text-sm text-gray-300 mb-4">
-                Gender: {member.gender}
+                Subscription: {member.paymentPlan ? member.paymentPlan : "N/A"}
               </p>
               {/* Hide delete button for admin */}
               {!(
