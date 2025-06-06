@@ -22,7 +22,7 @@ const ApproveUser = () => {
     const updatedMembers = members.map((member) => {
       if (member.email === email && member.status === "pending") {
         found = true;
-        return { ...member, status: "active" };
+        return { ...member, status: "active", approved: true };
       }
       return member;
     });

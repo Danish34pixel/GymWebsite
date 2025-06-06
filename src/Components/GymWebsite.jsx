@@ -105,6 +105,7 @@ const GymWebsite = () => {
       ...formData,
       image: base64Image,
       status: formData.paymentMethod === "cash" ? "pending" : "active",
+      approved: formData.paymentMethod === "cash" ? false : true,
     };
 
     setMembers([...members, newMember]);
@@ -133,7 +134,7 @@ const GymWebsite = () => {
             user_name: formData.name,
             confirm_link: `${
               window.location.origin
-            }/confirm?email=${encodeURIComponent(formData.email)}`,
+            }/approve?email=${encodeURIComponent(formData.email)}`,
             admin_email: "Imi.khan1987@gmail.com",
           },
           EMAILJS_PUBLIC_KEY
