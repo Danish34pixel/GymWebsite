@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "./FirebaseInit";
 
@@ -19,6 +21,9 @@ const SignupPage = ({
       // Validate email and password before sending to Firebase
       if (!formData.email || !formData.password) {
         setFirebaseError("Email and password are required.");
+        toast.error("Email and password are required.", {
+          position: "top-right",
+        });
         return;
       }
       const userCredential = await createUserWithEmailAndPassword(
@@ -28,6 +33,10 @@ const SignupPage = ({
       );
 
       handleSignup(e); // Call your local handler for any extra logic
+      toast.success(
+        "Signup successful! Please check your email for approval if you selected cash payment.",
+        { position: "top-right" }
+      );
     } catch (error) {
       // Show more user-friendly error messages
       let msg = error.message;
@@ -39,6 +48,7 @@ const SignupPage = ({
         msg = "Password should be at least 6 characters.";
       }
       setFirebaseError(msg);
+      toast.error(msg, { position: "top-right" });
     }
   };
   return (
@@ -175,6 +185,7 @@ const SignupPage = ({
           Already have an account? Login
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 };

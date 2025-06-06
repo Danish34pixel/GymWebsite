@@ -1,7 +1,13 @@
 import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminPanel = ({ members, deleteMember, logout }) => {
-  console.log(members);
+  // Toast for delete action
+  const handleDelete = (index) => {
+    deleteMember(index);
+    toast.success("Member deleted successfully!", { position: "top-right" });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-6">
@@ -50,7 +56,7 @@ const AdminPanel = ({ members, deleteMember, logout }) => {
                 member.email === "Imi.khan1987@gmail.com"
               ) && (
                 <button
-                  onClick={() => deleteMember(index)}
+                  onClick={() => handleDelete(index)}
                   className="bg-red-600 hover:bg-red-700 w-full py-2 rounded-lg text-white"
                 >
                   Delete
@@ -60,6 +66,7 @@ const AdminPanel = ({ members, deleteMember, logout }) => {
           ))}
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };
