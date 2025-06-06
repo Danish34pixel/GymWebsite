@@ -17,7 +17,7 @@ const GymWebsite = () => {
     age: "",
     gender: "",
     image: null,
-    role: "admin",
+    role: "member",
   });
 
   const [loginData, setLoginData] = useState({
@@ -34,7 +34,25 @@ const GymWebsite = () => {
     });
 
   useEffect(() => {
-    const storedMembers = JSON.parse(localStorage.getItem("gymMembers")) || [];
+    // Ensure admin user is always present
+    const adminUser = {
+      name: "admin",
+      email: "Imi.khan1987@gmail.com",
+      password: "123456789",
+      age: "",
+      gender: "",
+      image: null,
+      role: "admin",
+      status: "active",
+    };
+    let storedMembers = JSON.parse(localStorage.getItem("gymMembers")) || [];
+    const hasAdmin = storedMembers.some(
+      (m) => m.email === adminUser.email && m.role === "admin"
+    );
+    if (!hasAdmin) {
+      storedMembers = [adminUser, ...storedMembers];
+      localStorage.setItem("gymMembers", JSON.stringify(storedMembers));
+    }
     setMembers(storedMembers);
 
     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -101,31 +119,39 @@ const GymWebsite = () => {
     });
 
     if (formData.paymentMethod === "cash") {
-      // Send email to admin for cash confirmation
+      // EmailJS credentials - FILL THESE WITH YOUR REAL VALUES from https://dashboard.emailjs.com/
+      const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // e.g. service_abc123
+      const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. template_xyz456
+      const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // e.g. 8JHkLzxxxxxxx
+
       emailjs
         .send(
-          "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
-          "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
           {
             user_email: formData.email,
             user_name: formData.name,
             confirm_link: `${
               window.location.origin
             }/confirm?email=${encodeURIComponent(formData.email)}`,
+            admin_email: "Imi.khan1987@gmail.com",
           },
-          "YOUR_USER_ID" // Replace with your EmailJS user ID
+          EMAILJS_PUBLIC_KEY
         )
         .then(
           (result) => {
             console.log("Email sent to admin:", result.text);
+            alert(
+              "Signup successful! Your cash payment is pending admin confirmation. An email has been sent to the admin."
+            );
           },
           (error) => {
             console.error("Failed to send email:", error.text);
+            alert(
+              "Signup successful, but failed to send confirmation email to admin. Please contact admin directly."
+            );
           }
         );
-      alert(
-        "Signup successful! Your cash payment is pending admin confirmation."
-      );
     } else {
       alert("Signup successful! Please log in.");
     }
@@ -139,11 +165,16 @@ const GymWebsite = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    // Correct admin login: Imi.khan1987@gmail.com / 123456789
     if (
-      loginData.email === "danishkhaannn34@gmail.com" &&
-      loginData.password === "admin123"
+      loginData.email === "Imi.khan1987@gmail.com" &&
+      loginData.password === "123456789"
     ) {
-      setUser({ role: "admin", email: "admin@gym.com" });
+      setUser({
+        role: "admin",
+        email: "Imi.khan1987@gmail.com",
+        name: "admin",
+      });
       setCurrentPage("admin");
       return;
     }
@@ -166,6 +197,17 @@ const GymWebsite = () => {
   };
 
   const deleteMember = (index) => {
+    // Prevent admin
+    //  from being deleted
+    const member = members[index];
+    if (
+      member &&
+      member.role === "admin" &&
+      member.email === "Imi.khan1987@gmail.com"
+    ) {
+      alert("Admin user cannot be deleted.");
+      return;
+    }
     const updated = members.filter((_, i) => i !== index);
     setMembers(updated);
   };
@@ -210,7 +252,9 @@ const GymWebsite = () => {
       );
     }
 
-    return <HomePage setCurrentPage={setCurrentPage} logout={logout} />;
+    return (
+      <HomePage setCurrentPage={setCurrentPage} logout={logout} user={user} />
+    );
   };
 
   return <div className="font-sans">{renderPage()}</div>;

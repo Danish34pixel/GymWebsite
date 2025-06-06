@@ -35,12 +35,18 @@ const AdminPanel = ({ members, deleteMember, logout }) => {
               <p className="text-sm text-gray-300 mb-4">
                 Gender: {member.gender}
               </p>
-              <button
-                onClick={() => deleteMember(index)}
-                className="bg-red-600 hover:bg-red-700 w-full py-2 rounded-lg text-white"
-              >
-                Delete
-              </button>
+              {/* Hide delete button for admin */}
+              {!(
+                member.role === "admin" &&
+                member.email === "Imi.khan1987@gmail.com"
+              ) && (
+                <button
+                  onClick={() => deleteMember(index)}
+                  className="bg-red-600 hover:bg-red-700 w-full py-2 rounded-lg text-white"
+                >
+                  Delete
+                </button>
+              )}
             </div>
           ))}
         </div>

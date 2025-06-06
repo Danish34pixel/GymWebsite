@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ThreeScene from "./ThreeScene";
 import LoadingScreen from "./LoadingScreen";
-import { Link } from "react-router-dom";
 
-const HomePage = ({ setCurrentPage, logout }) => {
+const HomePage = ({ setCurrentPage, logout, user }) => {
   const [loading, setLoading] = useState(true);
   console.log("at home page");
   useEffect(() => {
@@ -36,6 +35,17 @@ const HomePage = ({ setCurrentPage, logout }) => {
             >
               Sign Up
             </button>
+            {/* AdminPanel Button: only for admin */}
+            {user &&
+              user.role === "admin" &&
+              user.email === "danishkhaannn34@gmail.com" && (
+                <button
+                  onClick={() => setCurrentPage("admin")}
+                  className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-all w-full sm:w-auto"
+                >
+                  AdminPanel
+                </button>
+              )}
             {/* Logout Button */}
             <button
               onClick={logout}
