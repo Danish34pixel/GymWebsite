@@ -251,7 +251,7 @@ const GymWebsite = () => {
     <Router>
       <Routes>
         <Route
-          path="/home"
+          path="/"
           element={<div className="font-sans">{renderPage()}</div>}
         />
         <Route path="/approve" element={<ApproveUser />} />
