@@ -179,15 +179,21 @@ const GymWebsite = () => {
     );
 
     if (foundUser) {
-      if (foundUser.status === "pending") {
-        alert("Your cash payment is pending admin confirmation.");
+      if (foundUser.status === "pending" || foundUser.approved === false) {
+        // Block login and show message if not approved
+        alert(
+          "Your account is pending admin approval. Please check your email after admin approval to login."
+        );
+        setLoginData({ email: "", password: "" });
         return;
       }
       setUser(foundUser);
       alert(`Welcome ${foundUser.name}`);
       setCurrentPage("home");
+      setLoginData({ email: "", password: "" });
     } else {
       alert("Invalid credentials. Please sign up first.");
+      setLoginData({ email: "", password: "" });
     }
   };
 
