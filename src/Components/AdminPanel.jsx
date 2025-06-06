@@ -15,6 +15,14 @@ const AdminPanel = ({ members, deleteMember, logout }) => {
         </button>
       </div>
 
+      {/* Show total members and capacity info */}
+      <div className="mb-6 text-lg font-semibold text-yellow-400">
+        Total Members: {members.length} / 50000
+        {members.length >= 50000 && (
+          <span className="ml-4 text-red-500">(Capacity Full)</span>
+        )}
+      </div>
+
       {members.length === 0 ? (
         <p className="text-gray-400">No members found.</p>
       ) : (
