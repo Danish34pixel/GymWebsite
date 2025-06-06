@@ -3,7 +3,9 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import AdminPanel from "./AdminPanel";
 import HomePage from "./HomePage";
+import ApproveUser from "./ApproveUser"; // <-- Add this if not already
 import emailjs from "emailjs-com";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const GymWebsite = () => {
   const [currentPage, setCurrentPage] = useState("login");
@@ -34,7 +36,6 @@ const GymWebsite = () => {
     });
 
   useEffect(() => {
-    // Ensure admin user is always present
     const adminUser = {
       name: "admin",
       email: "Imi.khan1987@gmail.com",
@@ -69,7 +70,6 @@ const GymWebsite = () => {
   useEffect(() => {
     if (user) {
       try {
-        // Only store minimal user info to avoid quota issues
         const minimalUser = {
           email: user.email,
           role: user.role,
@@ -77,10 +77,7 @@ const GymWebsite = () => {
         };
         localStorage.setItem("loggedInUser", JSON.stringify(minimalUser));
       } catch (e) {
-        // Fallback: remove if quota exceeded
         localStorage.removeItem("loggedInUser");
-        // Optionally, show a warning or log
-        console.warn("Could not save user to localStorage:", e);
       }
     } else {
       localStorage.removeItem("loggedInUser");
@@ -120,10 +117,9 @@ const GymWebsite = () => {
     });
 
     if (formData.paymentMethod === "cash") {
-      // EmailJS credentials - FILL THESE WITH YOUR REAL VALUES from https://dashboard.emailjs.com/
-      const EMAILJS_SERVICE_ID = "service_e8ui0id"; // e.g. service_abc123
-      const EMAILJS_TEMPLATE_ID = "template_ckmu8z8"; // e.g. template_xyz456
-      const EMAILJS_PUBLIC_KEY = "HPatAYbWo_57IPJu6"; // e.g. 8JHkLzxxxxxxx
+      const EMAILJS_SERVICE_ID = "service_e8ui0id";
+      const EMAILJS_TEMPLATE_ID = "template_ckmu8z8";
+      const EMAILJS_PUBLIC_KEY = "HPatAYbWo_57IPJu6";
 
       emailjs
         .send(
@@ -132,9 +128,9 @@ const GymWebsite = () => {
           {
             user_email: formData.email,
             user_name: formData.name,
-            confirm_link: `${
-              window.location.origin
-            }/approve?email=${encodeURIComponent(formData.email)}`,
+            confirm_link: `https://gym-website-two-eta.vercel.app/approve?email=${encodeURIComponent(
+              formData.email
+            )}`,
             admin_email: "Imi.khan1987@gmail.com",
           },
           EMAILJS_PUBLIC_KEY
@@ -143,13 +139,13 @@ const GymWebsite = () => {
           (result) => {
             console.log("Email sent to admin:", result.text);
             alert(
-              "Signup successful! Your cash payment is pending admin confirmation. An email has been sent to the admin."
+              "Signup successful! Your cash payment is pending admin confirmation."
             );
           },
           (error) => {
             console.error("Failed to send email:", error.text);
             alert(
-              "Signup successful, but failed to send confirmation email to admin. Please contact admin directly."
+              "Signup successful, but failed to send confirmation email. Contact admin."
             );
           }
         );
@@ -165,8 +161,6 @@ const GymWebsite = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    // Correct admin login: Imi.khan1987@gmail.com / 123456789
     if (
       loginData.email === "Imi.khan1987@gmail.com" &&
       loginData.password === "123456789"
@@ -198,8 +192,6 @@ const GymWebsite = () => {
   };
 
   const deleteMember = (index) => {
-    // Prevent admin
-    //  from being deleted
     const member = members[index];
     if (
       member &&
@@ -220,8 +212,6 @@ const GymWebsite = () => {
   };
 
   const renderPage = () => {
-    console.log(user);
-    console.log(user?.role);
     if (!user) {
       return currentPage === "signup" ? (
         <SignupPage
@@ -229,20 +219,19 @@ const GymWebsite = () => {
           setFormData={setFormData}
           handleSignup={handleSignup}
           handleFileChange={handleFileChange}
-          goHome={setCurrentPage} // ← FIXED HERE
+          goHome={setCurrentPage}
         />
       ) : (
         <LoginPage
           loginData={loginData}
           setLoginData={setLoginData}
           handleLogin={handleLogin}
-          goHome={setCurrentPage} // ← FIXED HERE
+          goHome={setCurrentPage}
         />
       );
     }
 
     if (user.role === "admin") {
-      // AdminPanel route
       return (
         <AdminPanel
           members={members}
@@ -258,7 +247,17 @@ const GymWebsite = () => {
     );
   };
 
-  return <div className="font-sans">{renderPage()}</div>;
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<div className="font-sans">{renderPage()}</div>}
+        />
+        <Route path="/approve" element={<ApproveUser />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default GymWebsite;
